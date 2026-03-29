@@ -9,13 +9,16 @@ struct ContaBancaria {
     
 }
 
-//Dados de conta Adm
+//Dados do gerente das contas
 let userAdmin = "adm01"
 let passUser = "01234"
 
+//Armazenar as contas cadastradas
 var contasBancarias: [ContaBancaria] = []
 var executarSessao: Bool = true
 
+
+// Mensagem de saudação para o usuário
 func obterSaudacao() -> String {
     let hora = Calendar.current.component(.hour, from: Date())
     if hora >= 5 && hora < 12 {
@@ -26,8 +29,7 @@ func obterSaudacao() -> String {
         return "Boa noite"
     }
 }
-
-print("Bem vindo ao sistema bancario - Projeto Curso Swift")
+print("\n Bem vindo ao sistema bancario - Projeto Curso Swift ")
 
 while executarSessao {
     print ("\n ======== Menu de opções ========")
@@ -124,12 +126,13 @@ while executarSessao {
                 
             }
         case "3":
-            print("\n Acesso Gerente da Conta ", terminator: "")
+            print("\n==== Acesso do Gerente das Contas ====")
+            print("\n Código Adm Contas: ", terminator: "")
             let userGerente = readLine() ?? ""
-            print ("\n Senha Gerente da Conta ", terminator: "")
+            print ("\n Senha Adm Contas:", terminator: "")
             let senhaGerente = readLine() ?? ""
             if (userGerente == userAdmin) && (senhaGerente == passUser) {
-                print("\n Listar contas Cadastradas")
+                print("\n == Listar contas Cadastradas == ")
                 contasBancarias.forEach{
                     print("Conta: ", $0.numero, " - Titular: ", $0.titular, " - Saldo: R$ ", $0.saldo   )
                 }
