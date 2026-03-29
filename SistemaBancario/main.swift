@@ -55,6 +55,8 @@ while executarSessao {
             contasBancarias.append(conta)
             print(" Conta de ", titular, "Criada!!")
             
+            // Funcionalidade do login vai verificar o número da conta bancária e a senha da busca
+            
         case "2":
             print("\n ====== Login Cliente ===========")
             print("Número da Conta: ", terminator: "")
@@ -83,11 +85,33 @@ while executarSessao {
                             if  valorDeposito > 0 {
                                 contasBancarias[i].saldo += valorDeposito
                                 print("Depósito efetuado com sucesso! Seu novo saldo é: R$ ", contasBancarias[i].saldo )
+                            } else {
+                                print("Não houve depósito, valor inválido!")
+                                logado = false
                             }
                         case "3":
                             print("\n Transferência entre contas ")
                             print("Digite a conta para transferência: ", terminator: "")
                             let contaDestino = readLine() ?? ""
+                            
+                            if let idDestino = contasBancarias.firstIndex(where: {$0.numero == contaDestino}) {
+                                if idDestino == i {
+                                    print("Não pode eftuar uma transferência para uma mesma conta")
+                                    continue
+                                }
+                                
+                                print("Valor para enviar para a ", contasBancarias[idDestino].titular, ": R$ ", terminator: "" )
+                                let valorTransferencia = Double(readLine() ?? "0") ?? 0.0
+                                if (valorTransferencia > 0) && (valorTransferencia <= contasBancarias[i].saldo) {
+                                    contasBancarias[i].saldo -= valorTransferencia
+                                    contasBancarias[idDestino].saldo += valorTransferencia
+                                    print ("Valor de R$ ", valorTransferencia, "Enviado com sucesso!!")
+                                } else {
+                                    print("Sem saldo na conta ou valor inválido!")
+                                }
+                            }else{
+                                print("Conta de destino não encontrada!")
+                            }
                         case "0":
                             logado = false
                         default:
@@ -95,11 +119,23 @@ while executarSessao {
                         }
                     }
                 }
+            }else {
+                print("Login Incorreto!")
+                
             }
-            
-            
-            
-            
+        case "3":
+            print("\n Acesso Gerente da Conta ", terminator: "")
+            let userGerente = readLine() ?? ""
+            print ("\n Senha Gerente da Conta ", terminator: "")
+            let senhaGerente = readLine() ?? ""
+            if (userGerente == userAdmin) && (senhaGerente == passUser) {
+                print("\n Listar contas Cadastradas")
+                contasBancarias.forEach{
+                    print("Conta: ", $0.numero, " - Titular: ", $0.titular, " - Saldo: R$ ", $0.saldo   )
+                }
+            } else {
+                print("Conta de Gerente Inválida!!")
+            }
         case "0":
             executarSessao = false
             print("Até logo!")
